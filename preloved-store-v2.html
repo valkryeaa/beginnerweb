@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Preloved Store — Branded Fashion, Harga Bersahabat</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+/* ══════════════ TOKENS ══════════════ */
+:root{
+  --white:#FFFFFF;
+  --snow:#FDFAF7;
+  --sand:#F5EDE3;
+  --linen:#EDE0D4;
+  --blush:#F4C5B8;
+  --rose:#E8806A;
+  --terracotta:#C9614A;
+  --bark:#3D2314;
+  --umber:#7A4A35;
+  --mist:#9A8880;
+  --sage:#8FAF9A;
+  --gold:#C8A96A;
+  --shadow-sm:0 4px 16px rgba(61,35,20,.08);
+  --shadow-md:0 12px 40px rgba(61,35,20,.14);
+  --shadow-lg:0 24px 64px rgba(61,35,20,.2);
+  --r:16px;
+  --transition:.28s cubic-bezier(.4,0,.2,1);
+}
+
+/* ══════════════ RESET ══════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--snow);
+  color:var(--bark);
+  overflow-x:hidden;
+  cursor:default;
+}
+img{display:block;width:100%}
+a{text-decoration:none;color:inherit}
+
+/* ══════════════ MUSIC HINT TOAST ══════════════ */
+#musicToast{
+  position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:var(--bark);color:var(--snow);
+  padding:10px 24px;border-radius:100px;
+  font-size:.82rem;font-weight:600;letter-spacing:.3px;
+  z-index:2000;opacity:0;pointer-events:none;
+  transition:opacity .4s,transform .4s;
+}
+#musicToast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ══════════════ MUSIC PLAYER ══════════════ */
+#musicPlayer{
+  position:fixed;bottom:24px;right:24px;z-index:1500;
+  display:flex;align-items:center;gap:10px;
+  background:rgba(253,250,247,.94);
+  backdrop-filter:blur(20px);
+  border:1.5px solid rgba(200,169,106,.25);
+  border-radius:100px;
+  padding:8px 18px 8px 8px;
+  box-shadow:var(--shadow-md);
+  transition:var(--transition);
+}
+#musicPlayer:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+#playBtn{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--rose);border:none;cursor:pointer;
+  color:#fff;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--transition),transform .15s;
+  flex-shrink:0;
+}
+#playBtn:hover{background:var(--terracotta);transform:scale(1.08)}
+.player-info{line-height:1.3}
+.player-title{font-size:.75rem;font-weight:700;color:var(--bark)}
+.player-sub{font-size:.67rem;color:var(--mist)}
+.bars{display:flex;align-items:center;gap:2.5px;margin-left:4px}
+.bars span{
+  display:block;width:3px;border-radius:3px;
+  background:var(--rose);
+  animation:barPulse .9s ease-in-out infinite;
+}
+.bars span:nth-child(1){height:8px;animation-delay:0s}
+.bars span:nth-child(2){height:14px;animation-delay:.18s}
+.bars span:nth-child(3){height:6px;animation-delay:.36s}
+.bars span:nth-child(4){height:12px;animation-delay:.09s}
+.bars.idle span{animation:none;height:4px}
+@keyframes barPulse{
+  0%,100%{transform:scaleY(1)}50%{transform:scaleY(.35)}
+}
+
+/* ══════════════ NAVBAR ══════════════ */
+#nav{
+  position:fixed;top:0;width:100%;z-index:1000;
+  padding:22px 64px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:padding var(--transition),background var(--transition),box-shadow var(--transition);
+}
+#nav.stuck{
+  padding:14px 64px;
+  background:rgba(253,250,247,.95);
+  backdrop-filter:blur(18px);
+  box-shadow:0 1px 0 rgba(61,35,20,.08),var(--shadow-sm);
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.55rem;font-weight:900;letter-spacing:-.5px;
+  color:var(--bark);display:flex;align-items:center;gap:8px;
+}
+.nav-logo .pip{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--rose);display:inline-block;
+  animation:pipBounce 2.5s ease-in-out infinite;
+}
+@keyframes pipBounce{
+  0%,100%{transform:scale(1)}50%{transform:scale(1.4)}
+}
+nav ul{list-style:none;display:flex;align-items:center;gap:36px}
+nav ul li a{
+  font-size:.88rem;font-weight:600;letter-spacing:.2px;
+  color:var(--umber);position:relative;padding-bottom:3px;
+  transition:color var(--transition);
+}
+nav ul li a::after{
+  content:'';position:absolute;bottom:0;left:0;
+  height:2px;width:0;background:var(--rose);
+  border-radius:2px;transition:width var(--transition);
+}
+nav ul li a:hover{color:var(--rose)}
+nav ul li a:hover::after{width:100%}
+.nav-shop{
+  background:var(--bark);color:var(--snow) !important;
+  padding:9px 22px;border-radius:100px;
+  transition:background var(--transition),transform .15s !important;
+}
+.nav-shop::after{display:none !important}
+.nav-shop:hover{background:var(--rose) !important;transform:translateY(-2px)}
+
+/* ══════════════ HERO ══════════════ */
+#home{
+  min-height:100vh;
+  display:grid;grid-template-columns:1.05fr 1fr;
+  position:relative;overflow:hidden;
+}
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:140px 64px 80px;position:relative;z-index:1;
+}
+.hero-decor{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,var(--sand) 0%,var(--linen) 60%,var(--blush) 100%);
+}
+.hero-dots{
+  position:absolute;bottom:60px;left:64px;
+  display:grid;grid-template-columns:repeat(8,1fr);gap:10px;
+  opacity:.25;z-index:1;
+}
+.hero-dots span{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--umber);display:block;
+}
+.hero-left>*{position:relative;z-index:2}
+
+.hero-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(232,128,106,.15);border:1px solid rgba(232,128,106,.3);
+  color:var(--terracotta);
+  font-size:.76rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;
+  padding:6px 14px;border-radius:100px;margin-bottom:28px;width:fit-content;
+  animation:slideUp .6s ease both;
+}
+.hero-chip span{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--rose);display:block;
+  animation:pipBounce 1.5s ease-in-out infinite;
+}
+h1.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.8rem,4.5vw,4.4rem);
+  font-weight:900;line-height:1.06;
+  margin-bottom:22px;
+  animation:slideUp .65s .08s ease both;
+}
+h1.hero-h1 em{color:var(--rose);font-style:italic}
+.hero-sub{
+  font-size:1.08rem;color:var(--umber);font-weight:400;
+  line-height:1.75;max-width:400px;margin-bottom:38px;
+  animation:slideUp .65s .16s ease both;
+}
+.hero-ctas{
+  display:flex;gap:14px;flex-wrap:wrap;
+  animation:slideUp .65s .24s ease both;
+}
+.btn-fill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--bark);color:var(--snow);
+  font-weight:700;font-size:.92rem;
+  padding:15px 30px;border-radius:100px;
+  box-shadow:0 8px 24px rgba(61,35,20,.28);
+  transition:background var(--transition),transform .18s,box-shadow var(--transition);
+}
+.btn-fill:hover{background:var(--rose);transform:translateY(-3px);box-shadow:0 14px 36px rgba(232,128,106,.38)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  border:2px solid var(--linen);color:var(--bark);
+  font-weight:600;font-size:.92rem;
+  padding:13px 24px;border-radius:100px;
+  transition:border-color var(--transition),background var(--transition),transform .18s;
+}
+.btn-ghost:hover{border-color:var(--rose);background:rgba(244,197,184,.15);transform:translateY(-2px)}
+
+.hero-stats{
+  display:flex;gap:0;margin-top:48px;
+  animation:slideUp .65s .32s ease both;
+}
+.hero-stat{padding:0 28px;text-align:center}
+.hero-stat:first-child{padding-left:0}
+.hero-stat+.hero-stat{border-left:1px solid rgba(61,35,20,.12)}
+.hero-stat strong{
+  display:block;
+  font-family:'Playfair Display',serif;
+  font-size:2rem;font-weight:900;color:var(--bark);
+}
+.hero-stat small{font-size:.75rem;color:var(--mist);font-weight:500}
+
+.hero-right{
+  position:relative;overflow:hidden;
+}
+.hero-right img{
+  width:100%;height:100%;object-fit:cover;
+  object-position:top center;
+  animation:heroZoom 8s ease-in-out infinite alternate;
+}
+@keyframes heroZoom{
+  from{transform:scale(1)}to{transform:scale(1.05)}
+}
+.hero-right::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right,var(--sand) 0%,transparent 25%);
+}
+.hero-badge{
+  position:absolute;bottom:36px;left:36px;z-index:2;
+  background:rgba(253,250,247,.96);backdrop-filter:blur(16px);
+  border-radius:18px;padding:16px 20px;
+  box-shadow:var(--shadow-md);
+  display:flex;align-items:center;gap:14px;
+  animation:slideUp .8s .4s ease both;
+}
+.badge-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:var(--blush);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;flex-shrink:0;
+}
+.badge-text strong{display:block;font-size:.9rem;font-weight:700;color:var(--bark)}
+.badge-text small{font-size:.75rem;color:var(--mist)}
+.hero-pill{
+  position:absolute;top:48px;right:-8px;z-index:2;
+  background:var(--gold);color:#fff;
+  font-weight:800;font-size:.82rem;
+  padding:8px 20px;border-radius:100px 0 0 100px;
+  box-shadow:0 4px 16px rgba(200,169,106,.4);
+  animation:slideIn .7s .5s ease both;
+}
+@keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(22px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ══════════════ SHARED SECTION STYLES ══════════════ */
+.s-head{text-align:center;margin-bottom:56px}
+.s-kicker{
+  display:inline-block;font-size:.75rem;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--rose);margin-bottom:10px;
+}
+.s-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.9rem,3vw,2.75rem);font-weight:900;
+  line-height:1.18;color:var(--bark);margin-bottom:14px;
+}
+.s-sub{
+  font-size:.97rem;color:var(--mist);
+  line-height:1.75;max-width:480px;margin:0 auto;
+}
+
+/* ══════════════ PRODUK ══════════════ */
+#produk{padding:110px 64px;background:#fff}
+.prod-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:22px;
+}
+.prod-card{
+  background:var(--snow);border-radius:var(--r);overflow:hidden;
+  border:1.5px solid var(--linen);
+  transition:transform var(--transition),box-shadow var(--transition),border-color var(--transition);
+}
+.prod-card:hover{
+  transform:translateY(-10px);
+  box-shadow:var(--shadow-lg);
+  border-color:var(--blush);
+}
+.prod-img{
+  aspect-ratio:3/4;overflow:hidden;
+  background:var(--sand);position:relative;
+}
+.prod-img img{
+  height:100%;object-fit:cover;
+  transition:transform .55s cubic-bezier(.4,0,.2,1);
+}
+.prod-card:hover .prod-img img{transform:scale(1.09)}
+.prod-tag{
+  position:absolute;top:10px;left:10px;
+  background:var(--rose);color:#fff;
+  font-size:.65rem;font-weight:800;letter-spacing:1.2px;
+  text-transform:uppercase;padding:4px 10px;border-radius:100px;
+}
+.prod-body{padding:15px 16px 18px}
+.prod-brand{
+  font-size:.68rem;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;color:var(--rose);margin-bottom:3px;
+}
+.prod-name{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;font-weight:700;color:var(--bark);
+  margin-bottom:5px;line-height:1.3;
+}
+.prod-desc{
+  font-size:.78rem;color:var(--mist);line-height:1.55;
+  margin-bottom:12px;
+}
+.prod-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.prod-price{
+  font-size:1rem;font-weight:800;color:var(--bark);
+}
+.prod-price del{font-size:.75rem;color:#c5b5ae;font-weight:400;margin-left:5px}
+.prod-add{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  background:var(--bark);color:#fff;border:none;
+  font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--transition),transform .15s;
+}
+.prod-add:hover{background:var(--rose);transform:scale(1.12)}
+.prod-add.added{background:var(--sage)}
+
+/* ══════════════ TENTANG ══════════════ */
+#tentang{
+  padding:110px 64px;background:var(--snow);
+  display:grid;grid-template-columns:1fr 1.1fr;gap:80px;align-items:center;
+}
+.about-visuals{position:relative;flex-shrink:0}
+.about-main{
+  border-radius:24px;overflow:hidden;
+  box-shadow:var(--shadow-md);aspect-ratio:4/5;
+}
+.about-main img{height:100%;object-fit:cover}
+.about-thumb{
+  position:absolute;bottom:-28px;right:-28px;
+  width:46%;border-radius:18px;overflow:hidden;
+  border:4px solid #fff;box-shadow:var(--shadow-md);
+  aspect-ratio:1/1;
+}
+.about-thumb img{height:100%;object-fit:cover}
+.about-anchor{
+  position:absolute;top:28px;left:-24px;
+  background:#fff;border-radius:14px;
+  padding:14px 18px;box-shadow:var(--shadow-md);
+}
+.about-anchor strong{
+  font-family:'Playfair Display',serif;
+  font-size:1.3rem;color:var(--bark);display:block;
+}
+.about-anchor small{font-size:.72rem;color:var(--mist)}
+.about-text .s-title,.about-text .s-kicker,.about-text .s-sub{text-align:left}
+.about-text .s-sub{margin:0 0 24px;max-width:100%}
+.checks{list-style:none;margin-top:4px}
+.checks li{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 0;font-size:.93rem;font-weight:500;color:var(--umber);
+  border-bottom:1px solid var(--linen);
+}
+.checks li:last-child{border:none}
+.check-icon{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:var(--blush);display:flex;align-items:center;
+  justify-content:center;font-size:.78rem;margin-top:1px;
+}
+
+/* ══════════════ KEUNGGULAN ══════════════ */
+#keunggulan{
+  padding:110px 64px;
+  background:var(--bark);
+}
+#keunggulan .s-kicker{color:var(--gold)}
+#keunggulan .s-title{color:#fff}
+#keunggulan .s-sub{color:rgba(255,255,255,.5)}
+.feat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:24px;margin-top:56px;
+}
+.feat-card{
+  border-radius:var(--r);padding:40px 32px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.07);
+  position:relative;overflow:hidden;
+  transition:background var(--transition),border-color var(--transition),transform var(--transition);
+}
+.feat-card::before{
+  content:'';position:absolute;
+  inset:0;background:linear-gradient(135deg,rgba(200,169,106,.1) 0%,transparent 60%);
+  opacity:0;transition:opacity var(--transition);
+}
+.feat-card:hover{
+  background:rgba(255,255,255,.08);
+  border-color:rgba(200,169,106,.3);
+  transform:translateY(-6px);
+}
+.feat-card:hover::before{opacity:1}
+.feat-num{
+  font-family:'Playfair Display',serif;
+  font-size:3rem;font-weight:900;
+  color:rgba(200,169,106,.18);line-height:1;margin-bottom:20px;
+}
+.feat-emoji{font-size:2.2rem;margin-bottom:16px;display:block}
+.feat-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.45rem;font-weight:700;color:#fff;margin-bottom:12px;
+}
+.feat-desc{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.7}
+
+/* ══════════════ KONTAK ══════════════ */
+#kontak{padding:110px 64px;background:#fff}
+.kontak-grid{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:start;
+}
+.form-box{
+  background:var(--snow);border-radius:24px;
+  padding:44px 40px;border:1.5px solid var(--linen);
+}
+.form-box h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.7rem;font-weight:900;color:var(--bark);margin-bottom:6px;
+}
+.form-box p{font-size:.88rem;color:var(--mist);margin-bottom:32px}
+.fg{margin-bottom:18px}
+.fg label{
+  display:block;font-size:.78rem;font-weight:700;
+  color:var(--umber);letter-spacing:.4px;margin-bottom:6px;
+  text-transform:uppercase;
+}
+.fg input,.fg textarea{
+  width:100%;padding:12px 16px;
+  border:1.5px solid var(--linen);border-radius:12px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;
+  background:#fff;color:var(--bark);outline:none;resize:none;
+  transition:border-color var(--transition),box-shadow var(--transition);
+}
+.fg input:focus,.fg textarea:focus{
+  border-color:var(--rose);
+  box-shadow:0 0 0 3.5px rgba(232,128,106,.12);
+}
+.form-btn{
+  width:100%;padding:14px;border:none;border-radius:100px;
+  background:var(--bark);color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:700;font-size:.92rem;cursor:pointer;
+  transition:background var(--transition),transform .18s;
+}
+.form-btn:hover{background:var(--rose);transform:translateY(-2px)}
+
+.kontak-info h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.55rem;font-weight:900;color:var(--bark);margin-bottom:28px;
+}
+.ki{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:16px 0;border-bottom:1px solid var(--linen);
+}
+.ki:last-of-type{border:none}
+.ki-icon{
+  width:46px;height:46px;border-radius:13px;flex-shrink:0;
+  background:var(--sand);display:flex;align-items:center;
+  justify-content:center;font-size:1.15rem;
+}
+.ki-label{font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mist);margin-bottom:3px}
+.ki-val a,.ki-val{color:var(--bark);font-weight:500;font-size:.92rem}
+.ki-val a:hover{color:var(--rose)}
+.wa-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  background:#25D366;color:#fff;
+  font-weight:700;font-size:.9rem;
+  padding:13px 24px;border-radius:100px;
+  box-shadow:0 6px 24px rgba(37,211,102,.28);
+  margin-top:20px;
+  transition:transform var(--transition),box-shadow var(--transition);
+}
+.wa-cta:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(37,211,102,.38)}
+
+/* ══════════════ FOOTER ══════════════ */
+footer{
+  background:var(--bark);
+  color:rgba(255,255,255,.4);
+  padding:52px 64px 36px;
+}
+.foot-top{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  flex-wrap:wrap;gap:36px;
+  padding-bottom:40px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.foot-brand .nav-logo{color:#fff;margin-bottom:12px;font-size:1.4rem}
+.foot-brand p{font-size:.84rem;max-width:260px;line-height:1.7}
+.foot-col h4{
+  font-size:.72rem;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(255,255,255,.65);
+  margin-bottom:16px;
+}
+.foot-col ul{list-style:none}
+.foot-col ul li{margin-bottom:9px}
+.foot-col ul li a{
+  font-size:.85rem;color:rgba(255,255,255,.4);
+  transition:color var(--transition);
+}
+.foot-col ul li a:hover{color:var(--rose)}
+.foot-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;padding-top:28px;font-size:.8rem;
+}
+.foot-bottom strong{color:rgba(255,255,255,.65)}
+
+/* ══════════════ SCROLL REVEAL ══════════════ */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+.rl{opacity:0;transform:translateX(-28px);transition:opacity .6s ease,transform .6s ease}
+.rl.in{opacity:1;transform:none}
+.rr{opacity:0;transform:translateX(28px);transition:opacity .6s ease,transform .6s ease}
+.rr.in{opacity:1;transform:none}
+
+/* ══════════════ RESPONSIVE ══════════════ */
+@media(max-width:1280px){.prod-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:1100px){
+  #home{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .hero-left{padding:130px 40px 80px;text-align:center}
+  .hero-sub{margin:0 auto 38px}
+  .hero-ctas{justify-content:center}
+  .hero-stats{justify-content:center}
+  #tentang{grid-template-columns:1fr;gap:50px;padding:80px 40px}
+  .about-visuals{max-width:480px;margin:0 auto}
+  .feat-grid{grid-template-columns:1fr}
+  .kontak-grid{grid-template-columns:1fr}
+  #produk,#keunggulan,#kontak{padding:80px 40px}
+}
+@media(max-width:768px){
+  #nav{padding:14px 24px}
+  #nav.stuck{padding:12px 24px}
+  nav ul{gap:18px}
+  .nav-shop{display:none}
+  #home,.hero-left{padding:110px 24px 64px}
+  #produk,#tentang,#keunggulan,#kontak{padding:72px 24px}
+  .prod-grid{grid-template-columns:repeat(2,1fr)}
+  .about-thumb,.about-anchor{display:none}
+  footer{padding:40px 24px 28px}
+  .foot-top{flex-direction:column}
+  .foot-bottom{flex-direction:column;text-align:center}
+  #musicPlayer{right:12px;bottom:12px;padding:6px 14px 6px 6px}
+}
+@media(max-width:420px){
+  .prod-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ AUDIO ══════════ -->
+<audio id="bgAudio" loop preload="none">
+  <!-- Royalty-free lofi music (Bensound) -->
+  <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg"/>
+</audio>
+
+<!-- ══════════ MUSIC HINT TOAST ══════════ -->
+<div id="musicToast">🎵 Klik di mana saja untuk memutar musik</div>
+
+<!-- ══════════ MUSIC PLAYER ══════════ -->
+<div id="musicPlayer">
+  <button id="playBtn" onclick="toggleMusic()" title="Play / Pause">▶</button>
+  <div class="player-info">
+    <div class="player-title">Background Music</div>
+    <div class="player-sub" id="playerStatus">Klik untuk play</div>
+  </div>
+  <div class="bars idle" id="bars">
+    <span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav id="nav">
+  <div class="nav-logo">
+    <span class="pip"></span>Preloved Store
+  </div>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#tentang">Tentang</a></li>
+    <li><a href="#produk">Produk</a></li>
+    <li><a href="#kontak">Kontak</a></li>
+    <li><a href="#produk" class="nav-shop">Belanja ↗</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="home">
+  <div class="hero-decor"></div>
+  <div class="hero-left">
+    <div class="hero-chip"><span></span>Fashion Preloved Terpercaya</div>
+    <h1 class="hero-h1">Preloved <em>Branded,</em><br>Style Maksimal!</h1>
+    <p class="hero-sub">Tampil keren tanpa harus mahal — koleksi pakaian branded berkualitas pilihan dari Uniqlo, H&M, Zara, Levi's dan lebih banyak lagi.</p>
+    <div class="hero-ctas">
+      <a href="#produk" class="btn-fill">Belanja Sekarang →</a>
+      <a href="#tentang" class="btn-ghost">Tentang Kami</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>200+</strong><small>Produk</small></div>
+      <div class="hero-stat"><strong>500+</strong><small>Pelanggan</small></div>
+      <div class="hero-stat"><strong>10+</strong><small>Brand</small></div>
+    </div>
+    <div class="hero-dots">
+      <!-- generated by JS below -->
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80&auto=format&fit=crop" alt="Fashion Preloved"/>
+    <div class="hero-pill">Up to 80% OFF</div>
+    <div class="hero-badge">
+      <div class="badge-icon">✓</div>
+      <div class="badge-text">
+        <strong>100% Original</strong>
+        <small>Garansi keaslian produk</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PRODUK ══════════ -->
+<section id="produk">
+  <div class="s-head rv">
+    <div class="s-kicker">Koleksi Terbaru</div>
+    <h2 class="s-title">10 Produk Pilihan Kami</h2>
+    <p class="s-sub">Setiap item dikurasi ketat — bersih, berkualitas, dan selalu mengikuti tren.</p>
+  </div>
+  <div class="prod-grid">
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=70&auto=format&fit=crop" alt="Kaos Uniqlo"/>
+        <span class="prod-tag">Terlaris</span>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">Uniqlo</div>
+        <div class="prod-name">Kaos Uniqlo</div>
+        <div class="prod-desc">Cotton premium, kondisi 95%, warna netral versatile</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp50.000 <del>Rp180.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=400&q=70&auto=format&fit=crop" alt="Hoodie H&M"/>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">H&M</div>
+        <div class="prod-name">Hoodie H&M</div>
+        <div class="prod-desc">Fleece tebal hangat, size M, kondisi mulus sangat baik</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp80.000 <del>Rp250.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=70&auto=format&fit=crop" alt="Jaket Zara"/>
+        <span class="prod-tag">Hot 🔥</span>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">Zara</div>
+        <div class="prod-name">Jaket Zara</div>
+        <div class="prod-desc">Outer stylish edisi terbaru, size L, kondisi 90% mulus</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp120.000 <del>Rp450.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&q=70&auto=format&fit=crop" alt="Kemeja Pull&Bear"/>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">Pull&Bear</div>
+        <div class="prod-name">Kemeja Pull&Bear</div>
+        <div class="prod-desc">Motif kotak casual, bahan breathable, size L</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp70.000 <del>Rp220.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1608234808654-2a8875faa7fd?w=400&q=70&auto=format&fit=crop" alt="Sweater Bershka"/>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">Bershka</div>
+        <div class="prod-name">Sweater Bershka</div>
+        <div class="prod-desc">Knit cozy warna pastel hangat, size S–M fit</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp75.000 <del>Rp270.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=70&auto=format&fit=crop" alt="Jeans Levi's"/>
+        <span class="prod-tag">Premium</span>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">Levi's</div>
+        <div class="prod-name">Jeans Levi's</div>
+        <div class="prod-desc">Denim 501 classic, ukuran 32, kondisi 85% terawat</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp100.000 <del>Rp500.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=400&q=70&auto=format&fit=crop" alt="Jaket Denim"/>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">Denim Co.</div>
+        <div class="prod-name">Jaket Denim</div>
+        <div class="prod-desc">Denim wash effect klasik, tebal & awet, size L</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp110.000 <del>Rp380.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=400&q=70&auto=format&fit=crop" alt="Kaos Oversize"/>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">Streetwear</div>
+        <div class="prod-name">Kaos Oversize</div>
+        <div class="prod-desc">Fit longgar trendy, bahan katun soft touch, all-size</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp45.000 <del>Rp150.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400&q=70&auto=format&fit=crop" alt="Celana Chino"/>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">H&M</div>
+        <div class="prod-name">Celana Chino</div>
+        <div class="prod-desc">Slim fit, warna khaki, nyaman untuk daily wear</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp85.000 <del>Rp300.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card rv">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=70&auto=format&fit=crop" alt="Hoodie Vintage"/>
+        <span class="prod-tag">Vintage</span>
+      </div>
+      <div class="prod-body">
+        <div class="prod-brand">Vintage</div>
+        <div class="prod-name">Hoodie Vintage</div>
+        <div class="prod-desc">Retro 90s aesthetic, bahan fleece tebal berkualitas</div>
+        <div class="prod-foot">
+          <div class="prod-price">Rp90.000 <del>Rp350.000</del></div>
+          <button class="prod-add" onclick="addCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ TENTANG ══════════ -->
+<section id="tentang">
+  <div class="about-visuals rl">
+    <div class="about-main">
+      <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80&auto=format&fit=crop" alt="Tentang Preloved Store"/>
+    </div>
+    <div class="about-thumb">
+      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=300&q=80&auto=format&fit=crop" alt="Detail fashion"/>
+    </div>
+    <div class="about-anchor">
+      <strong>Est. 2021</strong>
+      <small>Yogyakarta 🇮🇩</small>
+    </div>
+  </div>
+  <div class="about-text rr">
+    <div class="s-kicker">Tentang Kami</div>
+    <h2 class="s-title">Cerita di Balik<br>Preloved Store</h2>
+    <p class="s-sub">Preloved Store adalah UMKM yang menjual pakaian branded bekas berkualitas tinggi. Kami fokus pada kualitas, kebersihan, dan tren — hadir untuk membantu anak muda tampil stylish dengan harga terjangkau.</p>
+    <ul class="checks">
+      <li><div class="check-icon">✓</div>Setiap item dicek, dicuci, dan diseleksi ketat sebelum dijual</li>
+      <li><div class="check-icon">✓</div>Brand terpercaya — Uniqlo, H&M, Zara, Levi's, Bershka & lebih</li>
+      <li><div class="check-icon">✓</div>Belanja preloved = ikut jaga bumi dari limbah fast fashion</li>
+      <li><div class="check-icon">✓</div>Fashion berkualitas harus bisa dinikmati semua kalangan</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ KEUNGGULAN ══════════ -->
+<section id="keunggulan">
+  <div class="s-head rv">
+    <div class="s-kicker">Kenapa Pilih Kami?</div>
+    <h2 class="s-title">Keunggulan Kami</h2>
+    <p class="s-sub">Kami tidak sekadar menjual pakaian — kami menjaga kepercayaan setiap pelanggan.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card rv">
+      <div class="feat-num">01</div>
+      <span class="feat-emoji">💸</span>
+      <div class="feat-title">Harga Terjangkau</div>
+      <p class="feat-desc">Hemat hingga 80% dari harga retail. Branded premium, dompet tetap aman. Pilihan terbaik buat anak muda yang ingin tampil kece tanpa boros.</p>
+    </div>
+    <div class="feat-card rv">
+      <div class="feat-num">02</div>
+      <span class="feat-emoji">🏷️</span>
+      <div class="feat-title">Barang Original & Berkualitas</div>
+      <p class="feat-desc">100% produk asli dari brand ternama dunia. Setiap item melewati pengecekan keaslian dan kondisi sebelum dipasarkan. No KW, no bohong.</p>
+    </div>
+    <div class="feat-card rv">
+      <div class="feat-num">03</div>
+      <span class="feat-emoji">✨</span>
+      <div class="feat-title">Trendy & Fashionable</div>
+      <p class="feat-desc">Koleksi selalu diperbarui mengikuti tren terkini. Dari casual streetwear hingga smart casual — semua tersedia, semua stylish, semua terjangkau.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ KONTAK ══════════ -->
+<section id="kontak">
+  <div class="s-head rv">
+    <div class="s-kicker">Hubungi Kami</div>
+    <h2 class="s-title">Yuk, Ngobrol Dulu!</h2>
+    <p class="s-sub">Ada pertanyaan soal produk? Mau cek stok atau request item? Kami siap bantu dengan senang hati.</p>
+  </div>
+  <div class="kontak-grid">
+    <div class="form-box rl">
+      <h3>Kirim Pesan</h3>
+      <p>Isi form ini, kami akan segera merespons kamu.</p>
+      <div class="fg"><label>Nama Lengkap</label><input type="text" placeholder="Nama kamu..."/></div>
+      <div class="fg"><label>WhatsApp / Email</label><input type="text" placeholder="08xx / email@..."/></div>
+      <div class="fg"><label>Produk yang Diminati</label><input type="text" placeholder="Contoh: Jaket Zara size M"/></div>
+      <div class="fg"><label>Pesan</label><textarea rows="4" placeholder="Tulis pesanmu di sini..."></textarea></div>
+      <button class="form-btn" onclick="sendMsg()">Kirim Pesan →</button>
+    </div>
+    <div class="kontak-info rr">
+      <h3>Info Kontak</h3>
+      <div class="ki">
+        <div class="ki-icon">📱</div>
+        <div>
+          <div class="ki-label">WhatsApp</div>
+          <div class="ki-val"><a href="https://wa.me/6282386301985" target="_blank">+62 823-8630-1985</a></div>
+        </div>
+      </div>
+      <div class="ki">
+        <div class="ki-icon">✉️</div>
+        <div>
+          <div class="ki-label">Email</div>
+          <div class="ki-val"><a href="mailto:radhityaurdha@gmail.com">radhityaurdha@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="ki">
+        <div class="ki-icon">📍</div>
+        <div>
+          <div class="ki-label">Alamat</div>
+          <div class="ki-val">Purimas Citra Gemilang 1,<br>Yogyakarta</div>
+        </div>
+      </div>
+      <div class="ki">
+        <div class="ki-icon">🕐</div>
+        <div>
+          <div class="ki-label">Jam Buka</div>
+          <div class="ki-val">Setiap Hari: 09.00 – 21.00 WIB</div>
+        </div>
+      </div>
+      <a href="https://wa.me/6282386301985" class="wa-cta" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.557 4.126 1.532 5.858L0 24l6.335-1.654A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.666-.493-5.207-1.355l-.373-.22-3.863 1.009 1.03-3.754-.241-.387A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Chat di WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="nav-logo" style="color:#fff">
+        <span class="pip"></span>Preloved Store
+      </div>
+      <p>Fashion preloved branded dari Yogyakarta untuk seluruh Indonesia. Tampil keren, harga bersahabat.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Navigasi</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#produk">Produk</a></li>
+        <li><a href="#tentang">Tentang</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Kontak</h4>
+      <ul>
+        <li><a href="https://wa.me/6282386301985">WhatsApp</a></li>
+        <li><a href="mailto:radhityaurdha@gmail.com">Email</a></li>
+        <li><a href="#kontak">Lokasi Jogja</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 <strong>Preloved Store</strong>. All rights reserved.</div>
+    <div>Dibuat oleh <strong>Raditya Musyaffa Urdha</strong> · <strong>SMK Muhammadiyah 1 Yogyakarta</strong></div>
+  </div>
+</footer>
+
+<!-- ══════════ JAVASCRIPT ══════════ -->
+<script>
+/* ── GENERATE HERO DOTS ── */
+const dotWrap = document.querySelector('.hero-dots');
+if(dotWrap){
+  for(let i=0;i<32;i++){
+    const s=document.createElement('span');
+    dotWrap.appendChild(s);
+  }
+}
+
+/* ── NAVBAR SCROLL ── */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('stuck',window.scrollY>50);
+},{ passive:true });
+
+/* ── SCROLL REVEAL ── */
+const rvEls=document.querySelectorAll('.rv,.rl,.rr');
+const rvObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      rvObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.1});
+rvEls.forEach((el,i)=>{
+  // stagger products
+  if(el.closest('.prod-grid')){
+    const idx=[...document.querySelectorAll('.prod-card')].indexOf(el);
+    el.style.transitionDelay=(idx*0.07)+'s';
+  }
+  rvObs.observe(el);
+});
+
+/* ══════════════════════════════════════
+   BACKGROUND MUSIC — PLAY ON FIRST CLICK
+   (avoids browser autoplay block)
+══════════════════════════════════════ */
+const audio     = document.getElementById('bgAudio');
+const playBtn   = document.getElementById('playBtn');
+const barsEl    = document.getElementById('bars');
+const statusEl  = document.getElementById('playerStatus');
+const toast     = document.getElementById('musicToast');
+
+let musicStarted = false;
+let isPlaying    = false;
+
+// Konfigurasi audio
+audio.volume = 0.25;
+
+/* Show toast hint after 1.5 s */
+setTimeout(()=>{
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),3500);
+},1500);
+
+/* FIRST CLICK ANYWHERE → start music */
+function startMusicOnFirstClick(){
+  if(musicStarted) return;
+  musicStarted = true;
+  document.removeEventListener('click', startMusicOnFirstClick);
+  
+  audio.play().then(()=>{
+    isPlaying = true;
+    playBtn.textContent = '❚❚';
+    barsEl.classList.remove('idle');
+    statusEl.textContent = 'Now Playing...';
+  }).catch(err=>{
+    console.warn('Audio play failed:', err);
+    statusEl.textContent = 'Tekan tombol play';
+  });
+}
+document.addEventListener('click', startMusicOnFirstClick);
+
+/* TOGGLE BUTTON */
+function toggleMusic(){
+  // Prevent this click from also triggering startMusicOnFirstClick
+  if(!musicStarted){
+    musicStarted = true;
+    document.removeEventListener('click', startMusicOnFirstClick);
+  }
+
+  if(isPlaying){
+    audio.pause();
+    isPlaying = false;
+    playBtn.textContent = '▶';
+    barsEl.classList.add('idle');
+    statusEl.textContent = 'Dijeda';
+  } else {
+    audio.play().then(()=>{
+      isPlaying = true;
+      playBtn.textContent = '❚❚';
+      barsEl.classList.remove('idle');
+      statusEl.textContent = 'Now Playing...';
+    });
+  }
+}
+
+/* ── ADD TO CART FEEDBACK ── */
+function addCart(btn){
+  btn.textContent='✓';
+  btn.classList.add('added');
+  setTimeout(()=>{
+    btn.textContent='+';
+    btn.classList.remove('added');
+  },1400);
+}
+
+/* ── FORM SUBMIT ── */
+function sendMsg(){
+  alert('✅ Pesan terkirim!\nKami akan segera menghubungi kamu. Terima kasih! 😊');
+}
+</script>
+</body>
+</html>
